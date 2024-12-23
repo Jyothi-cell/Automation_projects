@@ -2,7 +2,7 @@ import streamlit as st
 import re
 
 # Title of the app
-st.title('Text Input to Custom XML Converter')
+st.title('Table Conversion')
 
 # Text area for user input
 user_input = st.text_area("Enter your text data here", height=200)
