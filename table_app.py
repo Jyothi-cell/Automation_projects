@@ -22,7 +22,11 @@ def parse_text_to_table_tags(text):
         parsed_rows.append(columns)
 
     # Generate XML structure
-    xml_content = '<?ctbl ampex.table.align="center"?>\n'
+    xml_content = f'<tbl ID="tbl1" maxsize="default">\n'
+    xml_content += '<table colsep="0" rowsep="0">\n'
+    xml_content += f'<?ctbl ampex.cols="{max_columns}"?>\n'
+    xml_content += f'<tgroup cols="{max_columns}">\n'
+    xml_content += '<?ctbl ampex.table.align="center"?>\n'
     xml_content += '<?ctbl ampex.colwidth="100"?>\n'
     
     # Add colspecs for each column
