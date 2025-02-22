@@ -41,7 +41,7 @@ def parse_text_to_table_tags(text):
         xml_content += "<row>\n"
         for i in range(max_columns):
             column_content = row[i].strip() if i < len(row) else ""
-            xml_content += f'<entry colname="col{i+1}" align="left" valign="top"><para><paratext ID="p">{column_content}</paratext></para></entry>\n'
+            xml_content += f'<entry colname="col{i+1}" align="left" valign="top" colsep="1"><para><paratext ID="p">{column_content}</paratext></para></entry>\n'
         xml_content += "</row>\n"
     
     xml_content += "</tbody>\n</tgroup>\n</table>\n</tbl>"
