@@ -1048,14 +1048,24 @@ def fetch_data_by_document_uuid(guid_uuid: str):
 
 def main():
     st.title("Attorney Information Extractor")
+
+    st.caption(
+        "Note: fetching by GUID requires access to TR's internal network. "
+        "If that fails (e.g. on Streamlit Cloud), upload the XML file instead."
+    )
+    uploaded_file = st.file_uploader("Or upload a Novus XML file", type=["xml"])
     guid_uuid = st.text_input("Enter Guid uuid:")
 
+    fetched_data = None
     if st.button("Fetch and Extract Information"):
-        if not guid_uuid:
-            st.warning("Please enter a valid Guid uuid.")
+        if uploaded_file is not None:
+            fetched_data = uploaded_file.read()
+        elif guid_uuid:
+            fetched_data = fetch_data_by_document_uuid(guid_uuid)
+        else:
+            st.warning("Please enter a valid Guid uuid or upload an XML file.")
             return
 
-        fetched_data = fetch_data_by_document_uuid(guid_uuid)
         if not fetched_data:
             return
 
