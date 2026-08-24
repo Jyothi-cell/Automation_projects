@@ -1008,7 +1008,7 @@ def format_attorney_blocks(lines: List[str]) -> str:
 
 
 def process_xml_to_json(xml_content: bytes) -> Dict[str, dict]:
-    root = ET.fromstring(xml_content)
+    root = ET.fromstring(_strip_leading_junk(xml_content))
     jurisdiction = infer_jurisdiction(root)
     title_text = extract_title_text(root)
     title_info = parse_title_parties(title_text)
@@ -1019,9 +1019,15 @@ def process_xml_to_json(xml_content: bytes) -> Dict[str, dict]:
     return {"response": {"content.attorney": lines}}
 
 
+def _strip_leading_junk(xml_content: bytes) -> bytes:
+    """Drop any bytes before the first '<' (e.g. browser 'Save Page As' preamble text)."""
+    idx = xml_content.find(b"<")
+    return xml_content[idx:] if idx > 0 else xml_content
+
+
 def process_xml_to_attorney_blocks(xml_content: bytes) -> str:
     """Main entry point: XML → attorney blocks per user's per-attorney block format."""
-    root = ET.fromstring(xml_content)
+    root = ET.fromstring(_strip_leading_junk(xml_content))
     jurisdiction = infer_jurisdiction(root)
     title_text = extract_title_text(root)
     title_info = parse_title_parties(title_text)
